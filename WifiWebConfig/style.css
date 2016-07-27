@@ -1,0 +1,39 @@
+body {
+ background-color: #2C3E50;
+ font-family: sans-serif;
+}
+h1{
+ color: #fff;
+}
+myT{
+ color: #fff;
+ font-size: 5em;
+}
+#main {
+ background-color: #586674;
+ -moz-border-radius: 6px;
+ -webkit-border-radius: 5px;
+ border-radius: 5px;
+ border: 2px solid #000000;
+ width: 80%;
+ margin: 0 auto;
+ padding: 20px
+}
+#submit {
+ font-size: 50;
+ color: #fff;
+ width: 80%;
+ height: 120px;
+ border: none;
+ margin: 0;
+ padding: 0;
+ background: #2C3E50; 
+}
+#inputtext {
+ font-size: 30;
+ width: 80%;
+ height: 2em;
+ border: none;
+ margin: 0;
+ padding: 0;
+} 
