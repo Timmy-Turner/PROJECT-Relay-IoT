@@ -6,7 +6,6 @@ end
 
 function extractvalues()
 
-
  ssid = string.sub(tgtfile,string.find(tgtfile,"ssid=")+5,string.find(tgtfile,"&password")-1)
  pw = string.sub(tgtfile,string.find(tgtfile,"password=")+9)
  
@@ -30,8 +29,7 @@ conn:on("receive", function(client,payload)
  if string.match(tgtfile, 'ssid', 0) then
  
  extractvalues()
- 
- 
+
 
  tmr.alarm(1,1000, 1, function() 
  if wifi.sta.getip()==nil then 
