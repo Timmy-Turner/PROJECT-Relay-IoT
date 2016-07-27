@@ -35,76 +35,73 @@ conn:on("receive", function(client,payload)
 
  tmr.alarm(1,1000, 1, function() 
  if wifi.sta.getip()==nil then 
- if wificount == 10 then
- print("Abort, no IP Address")
- tmr.stop(1)
- tgtfile = "error.html"
- local f = file.open(tgtfile,"r")
- client:send(file.read())
- file.close()
- client:close();
- collectgarbage();
- f = nil
- tgtfile = nil
- ssid = nil
- email = nil
- pw = nil
- access = nil
- wificount = nil 
- else
- print(".") 
- wificount = wificount + 1
- end
- else 
- print("WIFI ready...New IP address is "..wifi.sta.getip()) 
- tmr.stop(1) 
- print("output done file")
- tgtfile = "done.html"
+ 		if wificount == 10 then
+ 			print("Abort, no IP Address")
+ 			tmr.stop(1)
+ 			tgtfile = "error.html"
+ 			local f = file.open(tgtfile,"r")
+ 				client:send(file.read())
+ 				file.close()
+ 				client:close();
+ 				collectgarbage();
+ 				f = nil
+	 			tgtfile = nil
+ 				ssid = nil
+ 				email = nil
+ 				pw = nil
+ 				access = nil
+ 				wificount = nil 
+ 	else
+ 			print(".") 
+ 			wificount = wificount + 1
+ 		end
+ 	else 
+ 		print("WIFI ready...New IP address is "..wifi.sta.getip()) 
+ 		tmr.stop(1) 
+ 		print("output done file")
+ 		tgtfile = "done.html"
  
- local f = file.open(tgtfile,"r")
- print('client send the file')
- client:send(file.read())
- print('file close')
- file.close()
- print('client close') 
+ 		local f = file.open(tgtfile,"r")
+ 			print('client send the file')
+ 			client:send(file.read())
+ 			print('file close')
+		 	file.close()
+ 			print('client close') 
  -- client:close();
- print('client closed') 
- collectgarbage();
- f = nil
- tgtfile = nil
- tmr.alarm(0,15000,0,restart)
+ 			print('client closed') 
+ 			collectgarbage();
+ 			f = nil
+ 			tgtfile = nil
+ 			tmr.alarm(0,15000,0,restart)
  
- end 
+ 		end 
  end)
  
  
  
- else
- if tgtfile == "" then tgtfile = "index.html" end 
+ 	else
+ 		if tgtfile == "" then tgtfile = "index.html" end 
 
+ 			print('file')
+ 			print(tgtfile) 
+ 			local f = file.open(tgtfile,"r")
+ 
+ 			if f ~= nil then
+ 				print('client send 2') 
+ 				client:send(file.read())
+ 				file.close()
+ 				else
+					print('conn send 2') 
+ 					conn:send("HTTP/1.1 404 file not found")
+ 				return
+ 			end
+ 			print('client close 2') 
+ 			client:close();
+ 			collectgarbage();
+ 			f = nil
+ 			tgtfile = nil
+ 
+ 		end
 
- print('file')
- print(tgtfile) 
- local f = file.open(tgtfile,"r")
- 
- if f ~= nil then
- print('client send 2') 
- client:send(file.read())
- file.close()
- else
- print('conn send 2') 
- conn:send("HTTP/1.1 404 file not found")
- return
- end
- print('client close 2') 
- client:close();
- collectgarbage();
- f = nil
- tgtfile = nil
- 
- end
-
- 
- 
  end)
 end)
