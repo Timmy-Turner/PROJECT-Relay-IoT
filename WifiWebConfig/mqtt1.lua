@@ -8,7 +8,7 @@ relaystatus = false
 
 mqttBroker="mqtt.quanta-camp.com"
 mqttPort=1883
-deviceID = "TimsonNodeMCU"
+deviceID = "TH_Notice_Action"
 ip=wifi.sta.getip()
 
 function ctrlPower(status)
@@ -47,7 +47,7 @@ end
 function mqttPublish(temp, humi)
 
         local monitorData = "";
-        monitorData = monitorData .. "{\"DataAPIKey\": \"337741dacfe441d1b91911e85ee09d6a\",\"esptemp\":".. temp ..",\"esphumi\":".. humi .."}";   
+        monitorData = monitorData .. "{\"DataAPIKey\": \"478f1e9862b14b1b8eb97300a6117c5a\",\"TempSensor\":".. temp ..",\"HumiSensor\":".. humi .."}";   
         m:publish("Device/".. deviceID, monitorData,0,0,function() 
          print("Successfully published.") 
      end) 
@@ -70,16 +70,16 @@ function postIoTPlatform(temp, humi)
   
 
         local monitorData = "";
-        monitorData = monitorData .. "{\"esptemp\":".. temp ..",\"esphumi\":".. humi .."}";   
+        monitorData = monitorData .. "{\"TempSensor\":".. temp ..",\"HumiSensor\":".. humi .."}";   
 
         local length = string.len(monitorData);
         
-        connout:send("POST /v1/data/devices/TimsonNodeMCU/ HTTP/1.1\r\n"
+        connout:send("POST /v1/data/devices/TH_Notice_Action/ HTTP/1.1\r\n"
           .. "Host: iot.quanta-camp.com\r\n"
           .. "Content-Type: application/json\r\n"
           .. "Accept:application/json\r\n"
           .. "Content-Length: ".. length .. "\r\n"
-          .. "x-data-key: 337741dacfe441d1b91911e85ee09d6a\r\n"
+          .. "x-data-key: 478f1e9862b14b1b8eb97300a6117c5a\r\n"
           .. "\r\n"
           .. monitorData)
     end)
@@ -104,7 +104,7 @@ function mqttSubscribe()
 end 
 
 
-m = mqtt.Client(deviceID, 10, "739e76875c884c2e9ed5109417695148", "739e76875c884c2e9ed5109417695148")
+m = mqtt.Client(deviceID, 10, "5558e0c246024f8fa430b493735cdefe", "5558e0c246024f8fa430b493735cdefe")
 
 
 m:on("message", function(conn, topic, data) 
@@ -144,44 +144,22 @@ end
 function write_OLED() -- Write Display
 
    local str2=temp.."C | "..humi.."%"
-   local str7=ip
    local str3="IP:"
+   local str7=""
+   if ip == nil then
+       str7 = "No IP Found." 
+   else
+       str7 = ip
+   end
    disp:firstPage()
    repeat
      disp:drawStr(6, 2, str2)
+     disp:drawStr(1, 12, str3)
      disp:drawStr(21, 12, string.sub(str7, 1, 7))
      disp:drawStr(1, 22, string.sub(str7, 8))
-     disp:drawStr(1, 12, str3)
    until disp:nextPage() == false
    
-end  
-
-function write_OLED_Old() -- Write Display
-   local str1=humi
-   local str2=temp.."/"..humi
-   local str3="Temp:"
-   local str4="C"
-   local str5="Humi:"
-   local str6="%"
-   local str7=ip
-   disp:firstPage()
-   repeat
-     --disp:drawFrame(2,2,126,62)
-     disp:drawStr(5, 22, str7)
-     disp:setScale2x2()
-     disp:drawStr(36, 2, str2)
-     disp:drawStr(5, 2, str3)
-     disp:drawStr(49, 2, str4)
-     -- disp:drawStr(40, 30,  string.format("%02d:%02d:%02d",h,m,s))
-     disp:drawStr(36, 12, str1) 
-     disp:drawStr(49, 12, str6)
-     disp:drawStr(5, 12, str5)
-     --disp:setFont(u8g.font_chikita)
-     
-     --disp:drawCircle(18, 47, 14)
-   until disp:nextPage() == false
-   
-end
+end 
 
 
 tmr.alarm(1, 20000, 1, function()
