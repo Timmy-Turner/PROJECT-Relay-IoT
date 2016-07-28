@@ -112,7 +112,7 @@ m:on("message", function(conn, topic, data)
   if data ~= nil then
     print(data)
     local t = cjson.decode(data)
-    ctrlPower(t.esprelay)
+    ctrlPower(t.PowerRelay)
   end
 end)
 
